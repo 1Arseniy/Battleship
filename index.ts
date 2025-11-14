@@ -3,6 +3,8 @@ import { WebSocketServer } from "ws";
 
 import { createPlayer } from "./src/ws_responses/create_player";
 
+import type { TypeResponse } from "./src/types/types";
+
 const HTTP_PORT = 8181;
 
 console.log(`Start static http server on the ${HTTP_PORT} port!`);
@@ -15,14 +17,18 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (message) => {
     try {
-      const res = JSON.parse(message.toString());
+      const res: TypeResponse = JSON.parse(message.toString());
+
       const { type, data } = res;
 
-      console.log(type);
+      console.log(type, data);
 
       switch (type) {
         case "reg":
+          // const data = JSON.parse(message)
           createPlayer(data, ws);
+          break;
+        case "create_game":
           break;
         default:
           console.log("type incorrect");
