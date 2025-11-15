@@ -21,13 +21,7 @@ export function createPlayer(data: any, ws: WebSocket) {
   console.log(users);
 
   users.set("name", data.name);
-  // users.set('name',data.pa)
-
-  // console.log(
-  //   "1",
-  //   JSON.stringify({ ...response, data: JSON.stringify(response.data) })
-  // );
-  // console.log("1", JSON.stringify(response));
+  users.set("password", data.password);
 
   ws.send(JSON.stringify({ ...response, data: JSON.stringify(response.data) }));
 }
