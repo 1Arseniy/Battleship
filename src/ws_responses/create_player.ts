@@ -20,8 +20,10 @@ export function createPlayer(data: any, ws: WebSocket) {
 
   console.log(users);
 
-  users.set("name", data.name);
-  users.set("password", data.password);
+  // const isUser = users.get(data.name);
+  // if (!isUser) {
+  users.set(data.name, { name: data.name, password: data.password, ws });
 
   ws.send(JSON.stringify({ ...response, data: JSON.stringify(response.data) }));
+  // }
 }

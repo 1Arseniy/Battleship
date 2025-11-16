@@ -5,9 +5,10 @@ import { randomUUID } from "crypto";
 import { createPlayer } from "./src/ws_responses/create_player";
 import { createGame } from "./src/ws_responses/create_game";
 import { updateRoom } from "./src/ws_responses/update_room";
+import { users, room } from "./src/consts/consts";
 
 import type { TypeResponse } from "./src/types/types";
-import { rooms } from "./src/consts/consts";
+// import { rooms } from "./src/consts/consts";
 
 const HTTP_PORT = 8181;
 
@@ -31,29 +32,27 @@ wss.on("connection", (ws) => {
         case "reg":
           // const data = JSON.parse(message)
           createPlayer(data, ws);
+          updateRoom(room, users);
           // updateRoom(data, ws, roomId);
           break;
         case "create_room":
-          const roomId = randomUUID();
-
-          rooms.set(roomId, { players: [ws] });
-
-          const room = rooms.get(roomId);
-
-          room?.players.forEach((ws) => {
-            updateRoom(data, ws, roomId);
+          room.data.push({
+            roomId: randomUUID(),
+            roomUsers: [{ name: data.name, index: randomUUID() }],
           });
+          updateRoom(room, users);
 
           break;
         case "add_user_to_room":
-          const room1 = rooms.get(data.indexRoom);
+          updateRoom(room, users);
+          // const room1 = rooms.get(data.indexRoom);
 
-          room1?.players.push(ws);
+          // room1?.players.push(ws);
 
-          room1?.players.forEach((ws) => {
-            updateRoom(data, ws, data.indexRoom);
-          });
-          rooms.delete(data.indexRoom);
+          // room1?.players.forEach((ws) => {
+          //   updateRoom(data, ws, data.indexRoom);
+          // });
+          // rooms.delete(data.indexRoom);
           // const room = rooms.get(roomId);
 
           break;
