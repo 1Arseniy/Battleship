@@ -5,6 +5,7 @@ import { randomUUID } from "crypto";
 import { createPlayer } from "./src/ws_responses/create_player";
 import { createGame } from "./src/ws_responses/create_game";
 import { updateRoom } from "./src/ws_responses/update_room";
+import { startGame } from "./src/ws_responses/start_game";
 import { users, room } from "./src/consts/consts";
 
 import type { TypeResponse } from "./src/types/types";
@@ -55,6 +56,9 @@ wss.on("connection", (ws) => {
           // rooms.delete(data.indexRoom);
           // const room = rooms.get(roomId);
 
+          break;
+        case "add_ships":
+          startGame();
           break;
         case "create_game":
           createGame(data, ws);
